@@ -42,7 +42,9 @@ public class GradeRepositoryImpl extends BaseRepositoryImpl implements GradeRepo
 
     @Override
     public Grade findById(Long id) {
-        return null;
+    	Grade grd;
+    	grd = super.entityManager.find(Grade.class, id);
+        return grd;
     }
 
     @Override

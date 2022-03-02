@@ -3,12 +3,30 @@ package fr.uga.im2ag.l3.miage.db.model;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO ajouter une named query pour une des requêtes à faire dans le repository
-public class GraduationClass {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 
+// TODO ajouter une named query pour une des requêtes à faire dans le repository
+/*Il peut y avoir qu'un nom de mati�re par year
+* ex probleme : name = test, year = 2020 - name = test, year = 2020
+* ex correct  : name = test, year = 2019 - name = test, year = 2020  
+*/
+@Entity
+@Table(uniqueConstraints = { @UniqueConstraint(name = "UniqueNameByYear", columnNames = { "name", "laDate" }) })
+public class GraduationClass {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
+    @Column(name = "laDate") // year est un type en base de donn�es
     private Integer year;
+    @Transient
     private List<Student> students;
 
     public Long getId() {

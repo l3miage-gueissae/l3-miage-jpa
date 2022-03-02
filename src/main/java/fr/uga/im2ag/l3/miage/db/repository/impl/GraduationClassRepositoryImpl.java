@@ -12,10 +12,12 @@ public class GraduationClassRepositoryImpl extends BaseRepositoryImpl implements
         super(entityManager);
     }
 
+   //A faire 
     @Override
     public GraduationClass findByYearAndName(Integer year, String name) {
-        // TODO
-        return null;
+    	GraduationClass Gc;
+    	Gc = entityManager.find(GraduationClass.class,name );
+        return Gc;
     }
 
     @Override
@@ -30,8 +32,9 @@ public class GraduationClassRepositoryImpl extends BaseRepositoryImpl implements
 
     @Override
     public GraduationClass findById(Long id) {
-        // TODO
-        return null;
+    	GraduationClass Gc;
+    	Gc = entityManager.find(GraduationClass.class,id );
+        return Gc;
     }
 
     @Override

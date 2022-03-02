@@ -24,11 +24,12 @@ public class SubjectRepositoryImpl extends BaseRepositoryImpl implements Subject
     public void delete(Subject entity) {
         entityManager.remove(entity);
     }
-
+//atester
     @Override
     public Subject findById(Long id) {
-        // TODO
-        return null;
+    	Subject sub;
+    	sub = super.entityManager.find(Subject.class, id);
+        return sub;
     }
 
     @Override

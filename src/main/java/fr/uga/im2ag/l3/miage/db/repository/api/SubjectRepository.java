@@ -14,4 +14,6 @@ public interface SubjectRepository extends Repository<Subject, Long> {
      */
     Collection<Teacher> findTeachers(Long id);
 
+
+
 }

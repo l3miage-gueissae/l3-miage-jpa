@@ -27,9 +27,16 @@ class SubjectTest extends Base {
     void shouldSaveSubject() {
 
         final var subject = Fixtures.createSubject();
-
+        final var subject2 = Fixtures.createSubject();
+        System.out.println(subject.getName());
+        subject.setName("a");
+        //subject2.setName("a"); Erreur car un nom de matiere est unique
+        subject2.setName("b");
         entityManager.getTransaction().begin();
+     
+        
         subjectRepository.save(subject);
+        subjectRepository.save(subject2);
         entityManager.getTransaction().commit();
         entityManager.detach(subject);
 
@@ -42,6 +49,7 @@ class SubjectTest extends Base {
     @Test
     void shouldFindTeachersForSubject() {
         // TODO
+    	
     }
 
 }
