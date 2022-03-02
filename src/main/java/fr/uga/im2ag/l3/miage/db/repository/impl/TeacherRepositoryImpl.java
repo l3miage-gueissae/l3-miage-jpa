@@ -38,8 +38,9 @@ public class TeacherRepositoryImpl extends BaseRepositoryImpl implements Teacher
 
     @Override
     public Teacher findById(Long id) {
-        // TODO
-        return null;
+        Teacher T;
+        T = entityManager.find(Teacher.class, id);
+        return T;
     }
 
     @Override

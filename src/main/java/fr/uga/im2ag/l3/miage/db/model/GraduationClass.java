@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
@@ -26,7 +27,7 @@ public class GraduationClass {
     private String name;
     @Column(name = "laDate") // year est un type en base de données
     private Integer year;
-    @Transient
+    @OneToMany(mappedBy ="belongTo")
     private List<Student> students;
 
     public Long getId() {

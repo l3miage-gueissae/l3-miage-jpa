@@ -32,8 +32,9 @@ public class StudentRepositoryImpl extends BaseRepositoryImpl implements Student
 
     @Override
     public Student findById(Long id) {
-        // TODO
-        return null;
+    	Student stu;
+    	stu = entityManager.find(Student.class, id);
+        return stu;
     }
 
     @Override
