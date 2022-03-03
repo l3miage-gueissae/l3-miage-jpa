@@ -4,11 +4,16 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 // TODO ajouter une named query pour une des requêtes à faire dans le repository
 @Entity
+@NamedQueries({
+	@NamedQuery(name="Student-AvgAbove",query="SELECT st from Student st join st.grades grades having ( sum(grades.value * grades.weight)/ sum(weight ))>:avg")
+})
 public class Student extends Person {
 	@ManyToOne
     private GraduationClass belongTo;

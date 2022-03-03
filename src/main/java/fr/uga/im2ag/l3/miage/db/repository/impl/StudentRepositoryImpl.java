@@ -2,8 +2,12 @@ package fr.uga.im2ag.l3.miage.db.repository.impl;
 
 import fr.uga.im2ag.l3.miage.db.repository.api.StudentRepository;
 import fr.uga.im2ag.l3.miage.db.model.Student;
+import fr.uga.im2ag.l3.miage.db.model.Subject;
+import fr.uga.im2ag.l3.miage.db.model.Teacher;
 
 import javax.persistence.EntityManager;
+
+import java.util.Collection;
 import java.util.List;
 
 public class StudentRepositoryImpl extends BaseRepositoryImpl implements StudentRepository {
@@ -39,13 +43,17 @@ public class StudentRepositoryImpl extends BaseRepositoryImpl implements Student
 
     @Override
     public List<Student> getAll() {
-        // TODO
-        return null;
+    	 List<Student> Res;
+         Res = entityManager.createQuery("SELECT s from Student s", Student.class).getResultList();
+         return Res;
     }
 
     @Override
     public List<Student> findStudentHavingGradeAverageAbove(float minAverage) {
-        // TODO
-        return null;
+    	List<Student> Res;
+        Res = entityManager.createNamedQuery("Student-AvgAbove", Student.class)
+        		.setParameter("avg", minAverage)
+        		.getResultList();
+        return Res;
     }
 }
