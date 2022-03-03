@@ -6,9 +6,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 @Entity
-// TODO ajouter une named query pour une des requêtes à faire dans le repository
+@NamedQueries({
+	@NamedQuery(name="HighestGrade",query="SELECT g from Grade g where g.value > :limit"),
+	@NamedQuery(name="HighestGrade-Subject",query="SELECT g from Grade g join g.subject subj where g.value > :limit and subj.id =:subj-id")
+})
 public class Grade {
 
 	

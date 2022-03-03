@@ -3,8 +3,11 @@ package fr.uga.im2ag.l3.miage.db.repository.impl;
 import fr.uga.im2ag.l3.miage.db.repository.api.GradeRepository;
 import fr.uga.im2ag.l3.miage.db.model.Grade;
 import fr.uga.im2ag.l3.miage.db.model.Subject;
+import fr.uga.im2ag.l3.miage.db.model.Teacher;
 
 import javax.persistence.EntityManager;
+
+import java.util.Collection;
 import java.util.List;
 
 public class GradeRepositoryImpl extends BaseRepositoryImpl implements GradeRepository {
@@ -20,14 +23,21 @@ public class GradeRepositoryImpl extends BaseRepositoryImpl implements GradeRepo
 
     @Override
     public List<Grade> findHighestGrades(int limit) {
-        // TODO
-        return null;
+    	List<Grade> Res;
+        Res = entityManager.createNamedQuery("HighestGrade", Grade.class)
+        		.setParameter("limit", limit)
+        		.getResultList();
+        return Res;
     }
 
     @Override
     public List<Grade> findHighestGradesBySubject(int limit, Subject subject) {
-        // TODO
-        return null;
+    	List<Grade> Res;
+        Res = entityManager.createNamedQuery("HighestGrade-Subject", Grade.class)
+        		.setParameter("limit", limit)
+        		.setParameter("subj-id", subject.getId())
+        		.getResultList();
+        return Res;
     }
 
     @Override
@@ -49,7 +59,8 @@ public class GradeRepositoryImpl extends BaseRepositoryImpl implements GradeRepo
 
     @Override
     public List<Grade> getAll() {
-        // TODO
-        return null;
+    	List<Grade> Res;
+        Res = entityManager.createQuery("SELECT g from Grade g", Grade.class).getResultList();
+        return Res;
     }
 }

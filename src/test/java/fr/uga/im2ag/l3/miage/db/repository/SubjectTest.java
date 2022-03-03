@@ -73,7 +73,7 @@ class SubjectTest extends Base {
     	entityManager.detach(teacher2);
     	entityManager.detach(subject);
     	
-    	ArrayList<Teacher> LesProfs = new ArrayList(subjectRepository.findTeachers(subject.getId()));
+    	ArrayList<Teacher> LesProfs = new ArrayList<Teacher>(subjectRepository.findTeachers(subject.getId()));
     	// Vérifie si il y a bien 2 teacher
     	assertThat(LesProfs.size()).isEqualTo(2);
     	// On prend le premier
