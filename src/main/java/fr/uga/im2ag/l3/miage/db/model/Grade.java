@@ -12,7 +12,7 @@ import javax.persistence.NamedQuery;
 @Entity
 @NamedQueries({
 	@NamedQuery(name="HighestGrade",query="SELECT g from Grade g where g.value > :limit"),
-	@NamedQuery(name="HighestGrade-Subject",query="SELECT g from Grade g join g.subject subj where g.value > :limit and subj.id =:subj-id")
+	@NamedQuery(name="HighestGrade-Subject",query="SELECT g from Grade g join g.subject subj where g.value > :limit and subj.id =:subjid")
 })
 public class Grade {
 

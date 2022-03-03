@@ -25,7 +25,7 @@ public class GradeRepositoryImpl extends BaseRepositoryImpl implements GradeRepo
     public List<Grade> findHighestGrades(int limit) {
     	List<Grade> Res;
         Res = entityManager.createNamedQuery("HighestGrade", Grade.class)
-        		.setParameter("limit", limit)
+        		.setParameter("limit", (float)limit)
         		.getResultList();
         return Res;
     }
@@ -34,8 +34,8 @@ public class GradeRepositoryImpl extends BaseRepositoryImpl implements GradeRepo
     public List<Grade> findHighestGradesBySubject(int limit, Subject subject) {
     	List<Grade> Res;
         Res = entityManager.createNamedQuery("HighestGrade-Subject", Grade.class)
-        		.setParameter("limit", limit)
-        		.setParameter("subj-id", subject.getId())
+        		.setParameter("limit", (float)limit)
+        		.setParameter("subjid", subject.getId())
         		.getResultList();
         return Res;
     }
