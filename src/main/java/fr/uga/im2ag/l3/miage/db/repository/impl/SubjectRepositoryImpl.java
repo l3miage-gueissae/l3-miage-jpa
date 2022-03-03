@@ -24,7 +24,7 @@ public class SubjectRepositoryImpl extends BaseRepositoryImpl implements Subject
     public void delete(Subject entity) {
         entityManager.remove(entity);
     }
-//atester
+
     @Override
     public Subject findById(Long id) {
     	Subject sub;
@@ -34,13 +34,17 @@ public class SubjectRepositoryImpl extends BaseRepositoryImpl implements Subject
 
     @Override
     public List<Subject> getAll() {
-        // TODO
-        return null;
+        List<Subject> Res;
+        Res = entityManager.createQuery("SELECT s from Subject s", Subject.class).getResultList();
+        return Res;
     }
 
     @Override
     public Collection<Teacher> findTeachers(Long id) {
-        // TODO
-        return null;
+    	Collection<Teacher> Res;
+        Res = entityManager.createNamedQuery("Teacher-subject", Teacher.class)
+        		.setParameter("id", id)
+        		.getResultList();
+        return Res;
     }
 }

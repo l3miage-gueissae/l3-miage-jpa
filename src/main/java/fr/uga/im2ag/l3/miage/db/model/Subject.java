@@ -12,12 +12,9 @@ import java.util.Date;
 
 // TODO ajouter une named query pour une des requêtes à faire dans le repository
 @Entity
-//@NamedQueries({
-//	@NamedQuery("findTeachers",query="select s from subject s where id = :id");
-//
-//
-//
-//})
+@NamedQueries({
+	@NamedQuery(name="Teacher-subject",query="SELECT t from Teacher t join t.teaching subj where subj.id = :id")
+})
 public class Subject {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
