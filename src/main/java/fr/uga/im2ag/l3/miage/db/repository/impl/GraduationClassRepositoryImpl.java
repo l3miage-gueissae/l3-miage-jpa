@@ -1,6 +1,7 @@
 package fr.uga.im2ag.l3.miage.db.repository.impl;
 
 import fr.uga.im2ag.l3.miage.db.repository.api.GraduationClassRepository;
+import fr.uga.im2ag.l3.miage.db.model.Grade;
 import fr.uga.im2ag.l3.miage.db.model.GraduationClass;
 
 import javax.persistence.EntityManager;
@@ -12,12 +13,13 @@ public class GraduationClassRepositoryImpl extends BaseRepositoryImpl implements
         super(entityManager);
     }
 
-   //A faire 
     @Override
     public GraduationClass findByYearAndName(Integer year, String name) {
-    	GraduationClass Gc;
-    	Gc = entityManager.find(GraduationClass.class,name );
-        return Gc;
+    	GraduationClass Res = entityManager.createNamedQuery("Year-Name", GraduationClass.class)
+        		.setParameter("annee", year)
+        		.setParameter("nom", name)
+        		.getSingleResult();
+        return Res;
     }
 
     @Override
@@ -39,7 +41,8 @@ public class GraduationClassRepositoryImpl extends BaseRepositoryImpl implements
 
     @Override
     public List<GraduationClass> getAll() {
-        // TODO
-        return null;
+    	List<GraduationClass> Res;
+        Res = entityManager.createQuery("SELECT g from GraduationClass g", GraduationClass.class).getResultList();
+        return Res;
     }
 }

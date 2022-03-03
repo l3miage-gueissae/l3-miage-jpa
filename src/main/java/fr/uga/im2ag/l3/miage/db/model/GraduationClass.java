@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -20,6 +22,9 @@ import javax.persistence.UniqueConstraint;
 */
 @Entity
 @Table(uniqueConstraints = { @UniqueConstraint(name = "UniqueNameByYear", columnNames = { "name", "laDate" }) })
+@NamedQueries({
+	@NamedQuery(name="Year-Name",query="SELECT gc from GraduationClass gc where gc.year =:annee and gc.name =:nom")
+})
 public class GraduationClass {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
