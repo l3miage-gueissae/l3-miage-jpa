@@ -2,6 +2,7 @@ package fr.uga.im2ag.l3.miage.db.repository;
 
 import fr.uga.im2ag.l3.miage.db.model.Grade;
 import fr.uga.im2ag.l3.miage.db.model.Student;
+import fr.uga.im2ag.l3.miage.db.model.Teacher;
 import fr.uga.im2ag.l3.miage.db.repository.api.GraduationClassRepository;
 import fr.uga.im2ag.l3.miage.db.repository.api.StudentRepository;
 import fr.uga.im2ag.l3.miage.db.repository.api.SubjectRepository;
@@ -58,7 +59,7 @@ class TeacherTest extends Base {
         // Persite dans la base
         subjectRepository.save(subject);
         studentRepository.save(student1);
-        studentRepository.save(student2);
+        studentRepository.save(student2); 
         studentRepository.save(student3);
         graduationClassRepository.save(graduationClass);
         teacherRepository.save(teacher);
@@ -86,6 +87,35 @@ class TeacherTest extends Base {
     @Test
     void shouldFindHeadingGraduationClassByYearAndName() {
         // TODO
+    	  final var graduationClass = Fixtures.createClass();
+    	  graduationClass.setName("Miage");
+    	  graduationClass.setYear(2022);
+    	  final var subject = Fixtures.createSubject();
+    	  final var teacher = Fixtures.createTeacher(subject, graduationClass);
+    	  
+    	  entityManager.getTransaction().begin();
+    	  
+    	  graduationClassRepository.save(graduationClass);
+    	  subjectRepository.save(subject);
+    	  teacherRepository.save(teacher);
+    	  //System.out.println(teacher.getFirstName());
+    	  entityManager.getTransaction().commit();
+    	  entityManager.detach(teacher);
+    	  entityManager.detach(subject);
+    	  entityManager.detach(graduationClass);
+    	  
+    	  //test de getALL
+    	  assertThat(teacherRepository.getAll().size()).isNotNull().isNotEqualTo(0);
+    	  //Récupération du teacher par date et name
+    	  Teacher t = teacherRepository.findHeadingGraduationClassByYearAndName(graduationClass.getYear(), graduationClass.getName());
+    	  //System.out.println(t.getFirstName());
+    	  assertThat(t).isNotNull().isNotSameAs(teacher);
+    	  assertThat(t.getId()).isEqualTo(teacher.getId());
+    	  assertThat(t.getFirstName()).isEqualTo(teacher.getFirstName());
+    	  assertThat(t.getLastName()).isEqualTo(teacher.getLastName());
+    	  
+    	  
+
     }
 
 }
