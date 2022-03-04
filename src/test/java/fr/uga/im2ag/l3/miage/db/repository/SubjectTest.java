@@ -1,6 +1,7 @@
 package fr.uga.im2ag.l3.miage.db.repository;
 
 import fr.uga.im2ag.l3.miage.db.model.Student;
+import fr.uga.im2ag.l3.miage.db.model.Subject;
 import fr.uga.im2ag.l3.miage.db.model.Teacher;
 import fr.uga.im2ag.l3.miage.db.repository.api.SubjectRepository;
 import fr.uga.im2ag.l3.miage.db.repository.api.TeacherRepository;
@@ -89,7 +90,7 @@ class SubjectTest extends Base {
     	
     }
     
-    void shouldDeleteSubject() {/*
+    void shouldDeleteSubject() {
   	  	
 	  	// Création d'une classe
 	  	final var subject = Fixtures.createSubject();
@@ -99,65 +100,62 @@ class SubjectTest extends Base {
         entityManager.getTransaction().begin();
         
         // Persite dans la base
-        graduationClassRepository.save(graduationClass);
-        studentRepository.save(student);
+        subjectRepository.save(subject);
         
         entityManager.getTransaction().commit();
-        studentRepository.delete(student);
+        subjectRepository.delete(subject);
 
         //Récupère l'étudiant 
-        var pStudent = studentRepository.findById(student.getId());
+        final var Subject = subjectRepository.findById(subject.getId());
         //Vérifie si il est null
-        assertThat(pStudent).isNull();*/
+        assertThat(Subject).isNull();
     }
     
     @Test
-    void shouldGetAllSubject() {/*
-            // Création d'une classe
-            final var graduationClass = Fixtures.createClass();
-              
+    void shouldGetAllSubject() {
             // Création d'un student
-            final var student = Fixtures.createStudent(graduationClass);
-            
-            student.setFirstName("Manu");
+            final var subject = Fixtures.createSubject();
+	  	
+	  		subject.setName("BDD");
             
             // Création d'un student
-            final var student2 = Fixtures.createStudent(graduationClass);
-            
-            student2.setFirstName("Justin");
+            final var subject2 = Fixtures.createSubject();
+	  	
+	  		subject.setName("APO");
             
             // Création d'un student
-            final var student3 = Fixtures.createStudent(graduationClass);
-            
-            student2.setFirstName("Quentin");
+            final var subject3 = Fixtures.createSubject();
+	  	
+	  		subject.setName("MSI");
               
             
-            System.out.println(student.getFirstName());
-            System.out.println(student2.getFirstName());
-            System.out.println(student3.getFirstName());
+            System.out.println(subject.getName());
+            System.out.println(subject2.getName());
+            System.out.println(subject3.getName());
             
             entityManager.getTransaction().begin();
             // Persite dans la base
-            graduationClassRepository.save(graduationClass);
-            studentRepository.save(student);
-            studentRepository.save(student2);
-            studentRepository.save(student3);
+            subjectRepository.save(subject);
+            subjectRepository.save(subject2);
+            subjectRepository.save(subject3);
             
             
             entityManager.getTransaction().commit();
             
-            entityManager.detach(student);
-            entityManager.detach(student2);
-            entityManager.detach(student3);
+            entityManager.detach(subject);
+            entityManager.detach(subject2);
+            entityManager.detach(subject3);
 
             //Récupère l'étudiant 
-            List<Student> LesStudents = studentRepository.getAll();
+            List<Subject> LesSubjects = subjectRepository.getAll();
             
-            //Vérifie si le prénom est bon pour le premier étudiant récupéré
-            assertThat(LesStudents.get(0).getFirstName()).isEqualTo(student.getFirstName());
+            assertThat(LesSubjects).isNotNull();
+            
+            //Vérifie si le nom de sujet est bon pour le premier sujet récupéré
+            assertThat(LesSubjects.get(0).getName()).isEqualTo(subject.getName());
             //Vérifie si le prénom est bon pour le second étudiant récupéré
-            assertThat(LesStudents.get(1).getFirstName()).isEqualTo(student2.getFirstName());
+            assertThat(LesSubjects.get(1).getName()).isEqualTo(subject2.getName());
             //Vérifie si le prénom est bon pour le troisième étudiant récupéré
-            assertThat(LesStudents.get(2).getFirstName()).isEqualTo(student3.getFirstName());*/
+            assertThat(LesSubjects.get(2).getName()).isEqualTo(subject3.getName());
         }
 }
