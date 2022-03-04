@@ -43,7 +43,7 @@ class StudentTest extends Base {
     }
 
     @Test
-    void shouldSaveStudent() {/*
+    void shouldSaveStudent() {
     	  // Création d'un subject
   	  	  final var subject = Fixtures.createSubject();
   	  	  // Création d'une grade
@@ -82,14 +82,14 @@ class StudentTest extends Base {
           System.out.println("nom de class");
           System.out.println(pStudent.getBelongTo().getName());
           // Test si le nom du subject est égal 
-          assertThat(pStudent.getGrades().get(0).getSubject().getName()).isEqualTo(student.getGrades().get(0).getSubject().getName());*/
+          assertThat(pStudent.getGrades().get(0).getSubject().getName()).isEqualTo(student.getGrades().get(0).getSubject().getName());
 
     }
 
     @Test
     void shouldFindStudentHavingGradeAverageAbove() {
     	
-    	/*// Création d'un subject
+    	// Création d'un subject
     	final var subject = Fixtures.createSubject();
     	
     	// Création d'une grade
@@ -139,7 +139,84 @@ class StudentTest extends Base {
     	assertThat(st.getFirstName()).isEqualTo("Manu");
     	
     	// Vérification que getAll <GraduationClass> fonctionne 
-    	System.out.println(studentRepository.getAll().get(0).getFirstName());*/
+    	System.out.println(studentRepository.getAll().get(0).getFirstName());
     }
+    
+    @Test
+    void shouldDeleteStudent() {
+  	  	
+	  	// Création d'une classe
+	  	final var graduationClass = Fixtures.createClass();
+	  	
+	  	// Création d'un student
+	  	final var student = Fixtures.createStudent(graduationClass);
+	  	student.setFirstName("Manu");
+	  	
+  	  
+        System.out.println(student.getFirstName());
+        
+        entityManager.getTransaction().begin();
+        
+        // Persite dans la base
+        graduationClassRepository.save(graduationClass);
+        studentRepository.save(student);
+        
+        entityManager.getTransaction().commit();
+        studentRepository.delete(student);
 
+        //Récupère l'étudiant 
+        var pStudent = studentRepository.findById(student.getId());
+        //Vérifie si il est null
+        assertThat(pStudent).isNull();
+    }
+    
+    @Test
+    void shouldGetAllStudents() {
+            // Création d'une classe
+            final var graduationClass = Fixtures.createClass();
+              
+            // Création d'un student
+            final var student = Fixtures.createStudent(graduationClass);
+            
+            student.setFirstName("Manu");
+            
+            // Création d'un student
+            final var student2 = Fixtures.createStudent(graduationClass);
+            
+            student2.setFirstName("Justin");
+            
+            // Création d'un student
+            final var student3 = Fixtures.createStudent(graduationClass);
+            
+            student2.setFirstName("Quentin");
+              
+            
+            System.out.println(student.getFirstName());
+            System.out.println(student2.getFirstName());
+            System.out.println(student3.getFirstName());
+            
+            entityManager.getTransaction().begin();
+            // Persite dans la base
+            graduationClassRepository.save(graduationClass);
+            studentRepository.save(student);
+            studentRepository.save(student2);
+            studentRepository.save(student3);
+            
+            
+            entityManager.getTransaction().commit();
+            
+            entityManager.detach(student);
+            entityManager.detach(student2);
+            entityManager.detach(student3);
+
+            //Récupère l'étudiant 
+            List<Student> LesStudents = studentRepository.getAll();
+            
+            //Vérifie si le prénom est bon pour le premier étudiant récupéré
+            assertThat(LesStudents.get(0).getFirstName()).isEqualTo(student.getFirstName());
+            //Vérifie si le prénom est bon pour le second étudiant récupéré
+            assertThat(LesStudents.get(1).getFirstName()).isEqualTo(student2.getFirstName());
+            //Vérifie si le prénom est bon pour le troisième étudiant récupéré
+            assertThat(LesStudents.get(2).getFirstName()).isEqualTo(student3.getFirstName());
+        }
 }

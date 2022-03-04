@@ -52,7 +52,7 @@ public class StudentRepositoryImpl extends BaseRepositoryImpl implements Student
     public List<Student> findStudentHavingGradeAverageAbove(float minAverage) {
     	List<Student> Res;
         Res = entityManager.createNamedQuery("Student-AvgAbove", Student.class)
-        		.setParameter("avg", minAverage)
+        		.setParameter("avg", (double)minAverage)
         		.getResultList();
         return Res;
     }
