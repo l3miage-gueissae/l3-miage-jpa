@@ -12,7 +12,7 @@ import javax.persistence.Transient;
 // TODO ajouter une named query pour une des requêtes à faire dans le repository
 @Entity
 @NamedQueries({
-	@NamedQuery(name="Student-AvgAbove",query="SELECT st from Student st join st.grades grades having ( sum(grades.value * grades.weight)/ sum(weight ))>:avg")
+	@NamedQuery(name="Student-AvgAbove",query="SELECT st, sum(grades.value * grades.weight)/ sum( weight ) as averageRatings from Student st join st.grades grades group by id having ( averageRatings )>:avg")
 })
 public class Student extends Person {
 	@ManyToOne

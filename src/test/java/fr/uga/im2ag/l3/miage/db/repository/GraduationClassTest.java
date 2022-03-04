@@ -61,7 +61,7 @@ class GraduationClassTest extends Base {
 
     @Test
     void shouldFindByYearAndName() {
-        // TODO
+       
     	final var graduationClass = Fixtures.createClass();
     	final var subject = Fixtures.createSubject();
     	final var teacher = Fixtures.createTeacher(subject,graduationClass);

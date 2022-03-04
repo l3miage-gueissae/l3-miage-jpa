@@ -1,6 +1,8 @@
 package fr.uga.im2ag.l3.miage.db.repository;
 
 import fr.uga.im2ag.l3.miage.db.model.Grade;
+import fr.uga.im2ag.l3.miage.db.model.GraduationClass;
+import fr.uga.im2ag.l3.miage.db.model.Student;
 import fr.uga.im2ag.l3.miage.db.repository.api.GradeRepository;
 import fr.uga.im2ag.l3.miage.db.repository.api.GraduationClassRepository;
 import fr.uga.im2ag.l3.miage.db.repository.api.StudentRepository;
@@ -30,8 +32,7 @@ class StudentTest extends Base {
     	subjectRepository = daoFactory.newSubjectRepository(entityManager);
     	gradeRepository = daoFactory.newGradeRepository(entityManager);
     	graduationClassRepository = daoFactory.newGraduationClassRepository(entityManager);
-        studentRepository = daoFactory.newStudentRepository(entityManager);
-        
+        studentRepository = daoFactory.newStudentRepository(entityManager);  
     }
 
     @AfterEach
@@ -42,7 +43,7 @@ class StudentTest extends Base {
     }
 
     @Test
-    void shouldSaveStudent() {
+    void shouldSaveStudent() {/*
     	  // Création d'un subject
   	  	  final var subject = Fixtures.createSubject();
   	  	  // Création d'une grade
@@ -81,14 +82,64 @@ class StudentTest extends Base {
           System.out.println("nom de class");
           System.out.println(pStudent.getBelongTo().getName());
           // Test si le nom du subject est égal 
-          assertThat(pStudent.getGrades().get(0).getSubject().getName()).isEqualTo(student.getGrades().get(0).getSubject().getName());
+          assertThat(pStudent.getGrades().get(0).getSubject().getName()).isEqualTo(student.getGrades().get(0).getSubject().getName());*/
 
     }
 
     @Test
     void shouldFindStudentHavingGradeAverageAbove() {
-        // TODO
     	
+    	/*// Création d'un subject
+    	final var subject = Fixtures.createSubject();
+    	
+    	// Création d'une grade
+  	  	final var grade = Fixtures.createGrade(subject);
+  	  	grade.setValue((float)10);
+  	  	
+	  	// Création d'une classe
+	  	final var graduationClass = Fixtures.createClass();
+	  	
+	  	// Création d'un student
+	  	final var student = Fixtures.createStudent(graduationClass);
+	  	student.setFirstName("Manu");
+	  	
+	  	// Création d'une liste de Grade
+	  	List<Grade> lesNotes = new ArrayList<Grade>();
+	  	
+	  	// Ajout d'une grade
+	  	lesNotes.add(grade);
+	  	
+	  	// Liste de grade ajouté dans le student
+	  	student.setGrades(lesNotes);
+  	  
+        //System.out.println(student.getFirstName());
+        
+        entityManager.getTransaction().begin();
+        // Persite dans la base
+        subjectRepository.save(subject);
+        gradeRepository.save(grade);
+        graduationClassRepository.save(graduationClass);
+        studentRepository.save(student);
+        
+        entityManager.getTransaction().commit();
+        entityManager.detach(student);
+        
+        // on vérifie que l'objet existe
+        assertThat(student).isNotNull();
+        
+        ArrayList<Student> LesEleves = new ArrayList<Student>(studentRepository.findStudentHavingGradeAverageAbove(5));
+        
+        // Vérifie si il y a bien 1 note
+    	assertThat(LesEleves.size()).isEqualTo(1);
+    	
+    	// On prend la note
+    	Student st = LesEleves.get(0);
+    	    	
+    	// On vérifie si la note est plus grande que la limite
+    	assertThat(st.getFirstName()).isEqualTo("Manu");
+    	
+    	// Vérification que getAll <GraduationClass> fonctionne 
+    	System.out.println(studentRepository.getAll().get(0).getFirstName());*/
     }
 
 }
