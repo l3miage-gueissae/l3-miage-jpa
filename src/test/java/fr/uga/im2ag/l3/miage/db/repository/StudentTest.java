@@ -169,6 +169,7 @@ class StudentTest extends Base {
         
         // Vérifie si il y a bien 1 seul student dans les élèves qui ont une moyenne au dessus de 5.
     	assertThat(LesEleves.size()).isEqualTo(1);
+    	
     	// Le test ne doit pas passer avec cette valeur.
     	// assertThat(LesEleves.size()).isEqualTo(2);
     	
