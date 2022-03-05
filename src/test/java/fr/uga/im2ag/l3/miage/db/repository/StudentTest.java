@@ -89,53 +89,93 @@ class StudentTest extends Base {
     @Test
     void shouldFindStudentHavingGradeAverageAbove() {
     	
-    	// Création d'un subject
+    	// Création d'un subject de nom BDD
     	final var subject = Fixtures.createSubject();
+    	subject.setName("BDD");
     	
-    	// Création d'une grade
+    	// Création de 3 grades
   	  	final var grade = Fixtures.createGrade(subject);
-  	  	grade.setValue((float)10);
+  	  	final var grade2 = Fixtures.createGrade(subject);
+  	  	final var grade3 = Fixtures.createGrade(subject);
+  	  	final var grade4 = Fixtures.createGrade(subject);
   	  	
-	  	// Création d'une classe
+  	  	// On affecte des valeurs et des poids à chacune des 3 notes
+  	  	grade.setValue((float)10);
+  	  	grade.setWeight((float)3);
+  	  	
+  	  	grade2.setValue((float)7);
+  	  	grade2.setWeight((float)1);
+  	  	
+  	  	grade3.setValue((float)7);
+	  	grade3.setWeight((float)1);
+  	  	
+  	  	grade4.setValue((float)4);
+  	  	grade4.setWeight((float)3);
+  	  	
+	  	// Création d'une graduationClass
 	  	final var graduationClass = Fixtures.createClass();
 	  	
-	  	// Création d'un student
-	  	final var student = Fixtures.createStudent(graduationClass);
-	  	student.setFirstName("Manu");
+	  	// Création d'un student de nom Manu
+	  	final var student_m = Fixtures.createStudent(graduationClass);
+	  	student_m.setFirstName("Manu");
 	  	
-	  	// Création d'une liste de Grade
-	  	List<Grade> lesNotes = new ArrayList<Grade>();
+	  	// Création d'un student de nom Justin
+	  	final var student_j = Fixtures.createStudent(graduationClass);
+	  	student_j.setFirstName("Justin");
 	  	
-	  	// Ajout d'une grade
-	  	lesNotes.add(grade);
+	  	// Création d'une liste de Grade pour Manu et Justin
+	  	List<Grade> lesNotes_Manu = new ArrayList<Grade>();
+	  	List<Grade> lesNotes_Justin = new ArrayList<Grade>();
 	  	
-	  	// Liste de grade ajouté dans le student
-	  	student.setGrades(lesNotes);
-  	  
+	  	// Ajout de deux grades dans les notes de Manu
+	  	lesNotes_Manu.add(grade);
+	  	lesNotes_Manu.add(grade2);
+	  	
+	  	// Ajout de deux grades dans les notes de Justin
+	  	lesNotes_Justin.add(grade3);
+	  	lesNotes_Justin.add(grade4);
+	  	
+	  	// Liste de grade ajouté dans le student Manu
+	  	student_m.setGrades(lesNotes_Manu);
+	  	
+	  	// Liste de grade ajouté dans le student Justin
+	  	student_j.setGrades(lesNotes_Justin);
+	  	
         //System.out.println(student.getFirstName());
         
         entityManager.getTransaction().begin();
         // Persite dans la base
         subjectRepository.save(subject);
+        
         gradeRepository.save(grade);
+        gradeRepository.save(grade2);
+        gradeRepository.save(grade3);
+        gradeRepository.save(grade4);
+        
         graduationClassRepository.save(graduationClass);
-        studentRepository.save(student);
+        
+        studentRepository.save(student_m);
+        studentRepository.save(student_j);
         
         entityManager.getTransaction().commit();
-        entityManager.detach(student);
+        entityManager.detach(student_m);
+        entityManager.detach(student_j);
         
         // on vérifie que l'objet existe
-        assertThat(student).isNotNull();
+        assertThat(student_m).isNotNull();
+        assertThat(student_j).isNotNull();
         
         ArrayList<Student> LesEleves = new ArrayList<Student>(studentRepository.findStudentHavingGradeAverageAbove(5));
         
-        // Vérifie si il y a bien 1 note
+        // Vérifie si il y a bien 1 seul student dans les élèves qui ont une moyenne au dessus de 5.
     	assertThat(LesEleves.size()).isEqualTo(1);
+    	// Le test ne doit pas passer avec cette valeur.
+    	// assertThat(LesEleves.size()).isEqualTo(2);
     	
-    	// On prend la note
+    	// On prend l'élève
     	Student st = LesEleves.get(0);
     	    	
-    	// On vérifie si la note est plus grande que la limite
+    	// On vérifie que ce soit bien Manu ( seul student avec une moyenne au dessus de 5)
     	assertThat(st.getFirstName()).isEqualTo("Manu");
     	
     	// Vérification que getAll <GraduationClass> fonctionne 
