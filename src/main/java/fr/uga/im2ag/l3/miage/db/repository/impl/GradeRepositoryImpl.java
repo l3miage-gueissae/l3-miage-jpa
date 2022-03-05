@@ -56,11 +56,12 @@ public class GradeRepositoryImpl extends BaseRepositoryImpl implements GradeRepo
     	grd = super.entityManager.find(Grade.class, id);
         return grd;
     }
-
+    
+    // ajout d'un order by id pour sortir une liste trié par l'id (pratique pour le test)
     @Override
     public List<Grade> getAll() {
     	List<Grade> Res;
-        Res = entityManager.createQuery("SELECT g from Grade g", Grade.class).getResultList();
+        Res = entityManager.createQuery("SELECT g from Grade g order by id", Grade.class).getResultList();
         return Res;
     }
 }

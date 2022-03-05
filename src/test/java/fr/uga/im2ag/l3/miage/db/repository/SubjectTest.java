@@ -89,14 +89,12 @@ class SubjectTest extends Base {
     
     	
     }
-    
+    @Test
     void shouldDeleteSubject() {
   	  	
 	  	// Création d'une classe
 	  	final var subject = Fixtures.createSubject();
-	  	
-	  	subject.setName("BDD");
-        
+	  	        
         entityManager.getTransaction().begin();
         
         // Persite dans la base
@@ -106,9 +104,9 @@ class SubjectTest extends Base {
         subjectRepository.delete(subject);
 
         //Récupère l'étudiant 
-        final var Subject = subjectRepository.findById(subject.getId());
+        Subject pSubject = subjectRepository.findById(subject.getId());
         //Vérifie si il est null
-        assertThat(Subject).isNull();
+        assertThat(pSubject).isNull();
     }
     
     @Test

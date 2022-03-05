@@ -101,5 +101,50 @@ class GraduationClassTest extends Base {
     	// Vérification que getAll <GraduationClass> fonctionne 
     	System.out.println(classRepository.getAll().get(0).getName());
     }
+    
+    @Test
+    void shouldGetAllGraduationClass() {
+            // Initialisation d'une liste N grade    	
+    		ArrayList<GraduationClass> lesClasses = new ArrayList<GraduationClass>();
+            entityManager.getTransaction().begin();
+       
+    		for(int i = 0; i < 10; i++) {
+                final var classe = Fixtures.createClass();
+                lesClasses.add(classe);
+                classRepository.save(classe);
+
+    		}
+    		entityManager.getTransaction().commit();
+    		for(int i = 0; i < lesClasses.size(); i++) {
+                entityManager.detach(lesClasses.get(i));
+    		}
+    		
+    		ArrayList<GraduationClass> plesClasses = new ArrayList<GraduationClass>();
+    		plesClasses = new ArrayList(classRepository.getAll());
+    		assertThat(plesClasses).isNotEmpty();
+    		assertThat(plesClasses.size()).isEqualTo(lesClasses.size());
+    		for(int i = 0; i < plesClasses.size(); i++) {
+    		
+               assertThat(plesClasses.get(i).getId()).isEqualTo(lesClasses.get(i).getId());
+               assertThat(plesClasses.get(i).getName()).isEqualTo(lesClasses.get(i).getName());
+               assertThat(plesClasses.get(i).getYear()).isEqualTo(lesClasses.get(i).getYear());
+    		}
+    		
+    }
+    
+    @Test
+    void shouldDeleteClass() {
+    	  final var classe = Fixtures.createClass();
+
+          entityManager.getTransaction().begin();
+          classRepository.save(classe);
+          entityManager.getTransaction().commit();
+          
+          classRepository.delete(classe);
+          
+          GraduationClass pClasse = classRepository.findById(classe.getId());
+          assertThat(pClasse).isNull();
+          
+    }
 
 }

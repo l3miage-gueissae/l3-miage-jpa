@@ -38,11 +38,12 @@ public class GraduationClassRepositoryImpl extends BaseRepositoryImpl implements
     	Gc = entityManager.find(GraduationClass.class,id );
         return Gc;
     }
-
+    
+    // ajout d'un order by id pour sortir une liste trié par l'id (pratique pour le test)
     @Override
     public List<GraduationClass> getAll() {
     	List<GraduationClass> Res;
-        Res = entityManager.createQuery("SELECT g from GraduationClass g", GraduationClass.class).getResultList();
+        Res = entityManager.createQuery("SELECT g from GraduationClass g order by id", GraduationClass.class).getResultList();
         return Res;
     }
 }

@@ -1,7 +1,9 @@
 package fr.uga.im2ag.l3.miage.db.repository;
 
 import fr.uga.im2ag.l3.miage.db.model.Grade;
+import fr.uga.im2ag.l3.miage.db.model.GraduationClass;
 import fr.uga.im2ag.l3.miage.db.model.Student;
+import fr.uga.im2ag.l3.miage.db.model.Subject;
 import fr.uga.im2ag.l3.miage.db.model.Teacher;
 import fr.uga.im2ag.l3.miage.db.repository.api.GraduationClassRepository;
 import fr.uga.im2ag.l3.miage.db.repository.api.StudentRepository;
@@ -11,6 +13,7 @@ import fr.uga.im2ag.l3.miage.db.repository.api.TeacherRepository;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.assertj.core.api.AssertDelegateTarget;
@@ -66,6 +69,10 @@ class TeacherTest extends Base {
         
         
         entityManager.getTransaction().commit();
+        entityManager.detach(subject);
+        entityManager.detach(student1);
+        entityManager.detach(student2);
+        entityManager.detach(student3);
         entityManager.detach(teacher);
 
 
@@ -116,6 +123,72 @@ class TeacherTest extends Base {
     	  
     	  
 
+    }
+    
+    @Test
+    void shouldGetAllTeacher() {
+            // Initialisation d'une liste N grade    	
+    		ArrayList<Teacher> lesProfs = new ArrayList<Teacher>();
+    		ArrayList<GraduationClass> lesClasses = new ArrayList<GraduationClass>();
+    		Subject subject = Fixtures.createSubject();
+            entityManager.getTransaction().begin();
+            subjectRepository.save(subject);
+            for(int i = 0; i < 10; i++) {
+                final var classe = Fixtures.createClass();
+                lesClasses.add(classe);
+                graduationClassRepository.save(classe);
+
+    		}
+       
+        	for(int i = 0; i < 10; i++) {
+                final var teacher = Fixtures.createTeacher(subject,lesClasses.get(i));
+                lesProfs.add(teacher);
+                teacherRepository.save(teacher);
+
+    		}
+
+            entityManager.getTransaction().commit();
+    		
+    		for(int i = 0; i < lesProfs.size(); i++) {
+                entityManager.detach(lesProfs.get(i));
+    		}
+    		
+    		ArrayList<Teacher> pLesProfs = new ArrayList<Teacher>();
+    		pLesProfs = new ArrayList(teacherRepository.getAll());
+    		assertThat(pLesProfs).isNotEmpty();
+    		assertThat(pLesProfs.size()).isEqualTo(lesProfs.size());
+    		for(int i = 0; i < pLesProfs.size(); i++) {
+    		
+               assertThat(pLesProfs.get(i).getId()).isEqualTo(lesProfs.get(i).getId());
+               assertThat(pLesProfs.get(i).getGender()).isEqualTo(lesProfs.get(i).getGender());
+               assertThat(pLesProfs.get(i).getFirstName()).isEqualTo(lesProfs.get(i).getFirstName());
+               assertThat(pLesProfs.get(i).getLastName()).isEqualTo(lesProfs.get(i).getLastName());
+
+               assertThat(pLesProfs.get(i).getTeaching().getId()).isEqualTo(lesProfs.get(i).getTeaching().getId());
+
+               assertThat(pLesProfs.get(i).getHeading().getId()).isEqualTo(lesProfs.get(i).getHeading().getId());
+
+    		}
+    		
+    }
+    
+    @Test
+    void shouldDeleteTeacher() {
+    	Subject subject = Fixtures.createSubject();
+        entityManager.getTransaction().begin();
+        subjectRepository.save(subject);
+        
+        GraduationClass classe = Fixtures.createClass();
+        graduationClassRepository.save(classe);
+        
+        Teacher teacher = Fixtures.createTeacher(subject, classe);
+        teacherRepository.save(teacher);
+        entityManager.getTransaction().commit();
+        teacherRepository.delete(teacher);
+        
+        Teacher pTeacher = teacherRepository.findById(teacher.getId());
+        assertThat(pTeacher).isNull();
+    	
     }
 
 }

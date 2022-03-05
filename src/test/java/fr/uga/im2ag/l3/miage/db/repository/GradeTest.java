@@ -1,6 +1,7 @@
 package fr.uga.im2ag.l3.miage.db.repository;
 
 import fr.uga.im2ag.l3.miage.db.model.Grade;
+import fr.uga.im2ag.l3.miage.db.model.Subject;
 import fr.uga.im2ag.l3.miage.db.model.Teacher;
 import fr.uga.im2ag.l3.miage.db.repository.api.GradeRepository;
 import fr.uga.im2ag.l3.miage.db.repository.api.SubjectRepository;
@@ -9,6 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -194,5 +196,54 @@ class GradeTest extends Base {
     	// Vérification que getAll <grade> fonctionne 
     	System.out.println(gradeRepository.getAll().get(0).getValue());
     }
+    
+    @Test
+    void shouldGetAllGrade() {
+            // Initialisation d'une liste N grade    	
+    		ArrayList<Grade> lesGrades = new ArrayList<Grade>();
+            final var subject = Fixtures.createSubject();
+            entityManager.getTransaction().begin();
+            //save un subject
+            subjectRepository.save(subject);
+    		for(int i = 0; i < 10; i++) {
+                final var grade = Fixtures.createGrade(subject);
+                lesGrades.add(grade);
+                gradeRepository.save(grade);
+
+    		}
+    		entityManager.getTransaction().commit();
+    		for(int i = 0; i < lesGrades.size(); i++) {
+                entityManager.detach(lesGrades.get(i));
+    		}
+    		
+    		ArrayList<Grade> plesGrades = new ArrayList<Grade>();
+    		plesGrades = new ArrayList(gradeRepository.getAll());
+    		assertThat(plesGrades).isNotEmpty();
+    		assertThat(plesGrades.size()).isEqualTo(lesGrades.size());
+    		for(int i = 0; i < plesGrades.size(); i++) {
+               assertThat(plesGrades.get(i).getId()).isEqualTo(lesGrades.get(i).getId());
+               assertThat(plesGrades.get(i).getValue()).isEqualTo(lesGrades.get(i).getValue());
+               assertThat(plesGrades.get(i).getSubject().getId()).isEqualTo(subject.getId());
+    		}
+    		
+    }
+    
+    @Test
+    void shouldDeleteGrade() {
+    	  final var subject = Fixtures.createSubject();
+    	  Grade grade = Fixtures.createGrade(subject);
+          entityManager.getTransaction().begin();
+          //save un subject
+          subjectRepository.save(subject);
+          gradeRepository.save(grade);
+          entityManager.getTransaction().commit();
+          
+          gradeRepository.delete(grade);
+          
+          Grade pGrade = gradeRepository.findById(grade.getId());
+          assertThat(pGrade).isNull();
+          
+    }
+    
 
 }

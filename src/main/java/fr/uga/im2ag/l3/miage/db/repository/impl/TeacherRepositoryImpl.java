@@ -46,11 +46,12 @@ public class TeacherRepositoryImpl extends BaseRepositoryImpl implements Teacher
         T = entityManager.find(Teacher.class, id);
         return T;
     } 
-
+    
+    // ajout d'un order by id pour sortir une liste trié par l'id (pratique pour le test)
     @Override
     public List<Teacher> getAll() {
     	 List<Teacher> Res;
-         Res = entityManager.createQuery("SELECT t from Teacher t", Teacher.class).getResultList();
+         Res = entityManager.createQuery("SELECT t from Teacher t order by id", Teacher.class).getResultList();
          return Res;
     }
 }
