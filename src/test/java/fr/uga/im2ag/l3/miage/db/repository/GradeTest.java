@@ -56,42 +56,53 @@ class GradeTest extends Base {
 
     @Test
     void shouldFailUpgradeGrade() {
+    	
     	final var subject = Fixtures.createSubject();   	
         final var grade = Fixtures.createGrade(subject);
+        
         grade.setValue((float)5);
         
         entityManager.getTransaction().begin();
         subjectRepository.save(subject);
         gradeRepository.save(grade);
-        System.out.println("1" + grade.getId());
+        
+        System.out.println("bonjour la " + grade.getId());
 
         // persiste grade avec value = 5 
         entityManager.getTransaction().commit();
         entityManager.detach(grade);
+        
         Grade gradeUpdate = gradeRepository.findById(grade.getId());
 
         entityManager.getTransaction().begin();
-        System.out.println("1" + gradeUpdate.getId());
+        
+        System.out.println("bonjour la " + gradeUpdate.getId());
         // modifie la value a 7
         gradeUpdate.setValue((float)7);
         gradeRepository.save(gradeUpdate);
         entityManager.getTransaction().commit();
+        entityManager.detach(gradeUpdate);
 
         //la value est quand meme update
         Grade gradeUpdated = gradeRepository.findById(gradeUpdate.getId());
-        System.out.println("2" + gradeUpdated.getId());
+        System.out.println("bonjour oui c moi oui " + gradeUpdated.getId());
         
         System.out.println(gradeUpdated.getValue());
+        
         // tente de mettre a jour   - ne met pas la valeur a jour car value n'est pas modifiable
         
 
-//        entityManager.detach(subject);
-//         entityManager.detach(grade);
-//        Grade pGrade = gradeRepository.findById(grade.getId());
-//        assertThat(pGrade.getValue()).isEqualTo(5);
-//     
+        entityManager.detach(subject);
+        entityManager.detach(grade);
+        
+        Grade pGrade = gradeRepository.findById(grade.getId());
+        
+        assertThat(pGrade.getValue()).isEqualTo(5);
+     
         
         // TODO, ici tester que la mise à jour n'a pas eu lieu.
+        
+         
     	 
     }
 
